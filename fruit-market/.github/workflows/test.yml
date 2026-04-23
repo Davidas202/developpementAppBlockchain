@@ -15,7 +15,16 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: fruit-market/package-lock.json
 
-      - run: npm ci
-      - run: npx hardhat compile
-      - run: npx hardhat test
+      - name: Install dependencies
+        run: npm ci
+        working-directory: fruit-market
+
+      - name: Compile contracts
+        run: npx hardhat compile
+        working-directory: fruit-market
+
+      - name: Run tests
+        run: npx hardhat test
+        working-directory: fruit-market
