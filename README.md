@@ -38,6 +38,10 @@ npx hardhat compile
 
 npx hardhat test
 
+## Vérifier couverture de tests
+
+npx hardhat coverage
+
 ## Déploiement V1
 
 npx hardhat run scripts/deploy.ts --network sepolia
