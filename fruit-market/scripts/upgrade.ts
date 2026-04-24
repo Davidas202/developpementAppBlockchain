@@ -1,6 +1,6 @@
 import { ethers, upgrades } from "hardhat";
 
-const PROXY_ADDRESS = process.env.PROXY_ADDRESS!;
+const PROXY_ADDRESS = "0x6a36796DA578f8A6898641D57B3c3DC88f058AEa";
 
 async function main() {
   const FruitMarketV2 = await ethers.getContractFactory("FruitMarketV2");
