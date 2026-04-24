@@ -91,3 +91,7 @@ https://sepolia.etherscan.io/address/0x17B6d95AccC417f6a663F9C5aF822d643F1c97e7
 # Implémentation V2:
 
 https://sepolia.etherscan.io/address/0xeda10b28d894284b027c4fBF609F283b6512ca7e
+
+## Réseau utilisé
+
+Ethereum Sepolia Testnet
