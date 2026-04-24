@@ -143,13 +143,24 @@ function App() {
       setStatus("Produit ajouté avec succès.");
       await loadProducts();
     } catch (error: any) {
-      setStatus(error.shortMessage ?? error.message ?? "Erreur ajout produit.");
+      setStatus(getReadableError(error));
     }
   }
 
   async function buyProduct(product: Product, quantityText: string) {
     try {
       const quantity = BigInt(quantityText);
+
+      if (quantity <= 0n) {
+        setStatus("La quantité doit être supérieure à 0.");
+        return;
+      }
+
+      if (quantity > product.stock) {
+        setStatus("Stock insuffisant pour cette quantité.");
+        return;
+      }
+
       const totalPrice = product.priceWei * quantity;
 
       const contract = await getContractWithSigner();
@@ -163,7 +174,7 @@ function App() {
       setStatus("Achat réussi.");
       await loadProducts();
     } catch (error: any) {
-      setStatus(error.shortMessage ?? error.message ?? "Erreur achat.");
+      setStatus(getReadableError(error));
     }
   }
 
@@ -183,8 +194,30 @@ function App() {
       setCategory("");
       await loadProducts();
     } catch (error: any) {
-      setStatus(error.shortMessage ?? error.message ?? "Erreur catégorie.");
+      setStatus(getReadableError(error));
     }
+  }
+
+  function getReadableError(error: any): string {
+    const message = error?.shortMessage || error?.message || "";
+
+    if (message.includes("unknown custom error")) {
+      return "Transaction refusée par le contrat. Vérifiez le stock, le prix ou vos permissions.";
+    }
+
+    if (message.includes("user rejected")) {
+      return "Transaction annulée dans MetaMask.";
+    }
+
+    if (message.includes("insufficient funds")) {
+      return "Fonds insuffisants pour payer la transaction.";
+    }
+
+    if (message.includes("execution reverted")) {
+      return "Action impossible : stock insuffisant, produit invalide ou accès non autorisé.";
+    }
+
+    return "Une erreur est survenue.";
   }
 
   useEffect(() => {
